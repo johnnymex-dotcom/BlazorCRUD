@@ -1,0 +1,33 @@
+﻿@page "/Suppliers"
+@using BlazorCRUD.Shared
+@inject HttpClient Http
+
+
+<h3>Suppliers</h3>
+
+@if (suppliers == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var supp in suppliers)
+    {
+        <div>@supp.CompanyName</div>
+    }
+    <span>@mess</span>
+
+    <span></span>
+}
+@code {
+    private IEnumerable<Supplier> suppliers;
+    private string mess = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        suppliers = await Http.GetFromJsonAsync<IEnumerable<Supplier>>("api/Suppliers");
+
+    }
+
+}
+
