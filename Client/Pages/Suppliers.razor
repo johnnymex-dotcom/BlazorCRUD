@@ -11,23 +11,57 @@
 }
 else
 {
-    @foreach (var supp in suppliers)
-    {
-        <div>@supp.CompanyName</div>
-    }
-    <span>@mess</span>
+    <table style="font-size:12px" class="table">
+        <thead>
+            <tr>
+                <th className="invisibleColumn"></th>
+                <th>CompanyName</th>
+                <th>ContactName</th>
+                <th>ContactTitle</th>
+                <th>Address</th>
+                <th>City</th>
 
-    <span></span>
-}
-@code {
+                <th>Country</th>
+                <th>Phone</th>
+                @*<th>links</th>*@
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var supp in suppliers)
+            {
+            <tr>
+                <td className="invisibleColumn">@supp.SupplierID</td>
+                <td>@supp.CompanyName</td>
+                <td>@supp.ContactName</td>
+                <td>@supp.ContactTitle</td>
+                <td>@supp.Address</td>
+                <td>@supp.City</td>
+                <td>@supp.Country</td>
+                <td>@supp.Phone</td>
+                @*<td>@supp.HomePage</td>*@
+            </tr>
+            }
+        </tbody>
+</table>
+
+        @*@foreach (var supp in suppliers)
+        {
+            <div>@supp.CompanyName</div>
+        }
+        <span>@mess</span>
+
+        <span></span>*@
+        }
+        @code {
     private IEnumerable<Supplier> suppliers;
-    private string mess = "";
+        private string mess = "";
 
-    protected override async Task OnInitializedAsync()
-    {
-        suppliers = await Http.GetFromJsonAsync<IEnumerable<Supplier>>("api/Suppliers");
+        protected override async Task OnInitializedAsync()
+        {
+            suppliers = await Http.GetFromJsonAsync<IEnumerable<Supplier>>("api/Suppliers");
 
-    }
+        }
 
-}
+        }
 

@@ -26,7 +26,7 @@ namespace BlazorCRUD.Server
         {
             try
             {
-               services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Northwind")));
+               services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(Configuration.GetConnectionString("NWind")));
             }
             catch (System.Exception)
             {
