@@ -27,16 +27,16 @@ namespace BlazorCRUD.Server.Controllers
         [HttpGet]
         public IEnumerable<Supplier> Get()
         {
-            var connstr = Configuration.GetConnectionString("NWind");
             var suppliers = SuppCtx.Suppliers.ToList();
             return suppliers;
         }
 
         // GET api/<SuppliersController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Supplier Get(int id)
         {
-            return "value";
+            var SelSupplier = SuppCtx.Suppliers.Find(id);
+            return SelSupplier;
         }
 
         // POST api/<SuppliersController>

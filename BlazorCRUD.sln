@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCRUD.Server", "Server\BlazorCRUD.Server.csproj", "{C753B663-AFFE-4077-8A32-9FEA128B7596}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCRUD.Server", "Server\BlazorCRUD.Server.csproj", "{C753B663-AFFE-4077-8A32-9FEA128B7596}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCRUD.Client", "Client\BlazorCRUD.Client.csproj", "{D5FFA683-69DB-4AC7-AEE2-4EE7C610B9D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCRUD.Client", "Client\BlazorCRUD.Client.csproj", "{D5FFA683-69DB-4AC7-AEE2-4EE7C610B9D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorCRUD.Shared", "Shared\BlazorCRUD.Shared.csproj", "{6251094D-8AB3-4FA2-BC34-916388D434D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorCRUD.Shared", "Shared\BlazorCRUD.Shared.csproj", "{6251094D-8AB3-4FA2-BC34-916388D434D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

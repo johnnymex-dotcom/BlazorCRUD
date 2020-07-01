@@ -1,0 +1,113 @@
+﻿@page "/UpdateSupplier/{ID}"
+@using BlazorCRUD.Shared
+@inject HttpClient Http
+
+<h3>UpdateSupplier</h3>
+<div>You want to update item with SupplierID: @ID</div>
+<hr />
+@if (supplier == null)
+{
+<p><em>Loading...</em></p>
+}
+else
+{
+<table width="80%" style="font-size:10px">
+    <tr>
+        <td>
+            <div>
+                <label>Company name</label>
+                <input type="text" value="@supplier.CompanyName" class="form-control col-md-8" />
+            </div>
+        </td>
+        <td>
+            <div>
+                <label>Contact name</label>
+                <input type="text" value="@supplier.ContactName" class="form-control col-md-8" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>
+                <label>Contact title</label>
+                <input type="text" value="@supplier.ContactTitle" class="form-control col-md-8" />
+            </div>
+        </td>
+        <td>
+            <div>
+                <label>Address</label>
+                <input type="text" value="@supplier.Address" class="form-control col-md-8" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>
+                <label>City</label>
+                <input type="text" value="@supplier.City" class="form-control col-md-8" />
+            </div>
+        </td>
+        <td>
+            <div>
+                <label>Region</label>
+                <input type="text" value="@supplier.Region" class="form-control col-md-8" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>
+                <label>Postal Code</label>
+                <input type="text" value="@supplier.PostalCode" class="form-control col-md-8" />
+            </div>
+        </td>
+        <td>
+            <div>
+                <label>Country</label>
+                <input type="text" value="@supplier.Country" class="form-control col-md-8" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div>
+                <label>Phone</label>
+                <input type="text" value="@supplier.Phone" class="form-control col-md-8" />
+            </div>
+        </td>
+        <td>
+            <div>
+                <label>Fax</label>
+                <input type="text" value="@supplier.Fax" class="form-control col-md-8" />
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div>
+                <label>Home page</label>
+                <input type="text" value="@supplier.HomePage" class="form-control col-md-8" />
+            </div>
+        </td>
+    
+    </tr>
+</table>
+<br />
+<input type="submit" value="Update" class="btn-success" />
+  
+    
+
+}
+@code {
+    [Parameter]
+    public string ID { get; set; }
+
+    public Supplier supplier { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        supplier = await Http.GetFromJsonAsync<Supplier>("api/Suppliers/" + ID);
+
+    }
+}
