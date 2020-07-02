@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BlazorCRUD.Server.Data;
 using BlazorCRUD.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -41,14 +43,28 @@ namespace BlazorCRUD.Server.Controllers
 
         // POST api/<SuppliersController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Supplier supplier)
         {
         }
 
         // PUT api/<SuppliersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Supplier supplier)
         {
+            if (ModelState.IsValid)
+            {
+                if (id != supplier.SupplierID)
+                {
+                    return BadRequest();
+                }
+                SuppCtx.Suppliers.Update(supplier);
+                await SuppCtx.SaveChangesAsync();
+                return Ok("\"Customer updated successfully!\"");
+            }
+            else
+            {
+                return BadRequest ("\"Error while updating supplier!\"");
+            }
         }
 
         // DELETE api/<SuppliersController>/5

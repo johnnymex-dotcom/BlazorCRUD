@@ -1,7 +1,46 @@
 ﻿@page "/"
+@using BlazorCRUD.Shared
+
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<EditForm Model="@person">
+    <DataAnnotationsValidator />
+    <ValidationSummary/>
+    <div class="form-group row">
+        <label for="Firstname" class="col-sm-2 col-form-label">
+            FirstName
+        </label>
+        <div class="col-sm-1-10">
+            <InputText id="firstName" class="form-control" @bind-Value="person.Firstname" />
+            <ValidationMessage For="@(()=> person.Firstname )" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Lastname" class="col-sm-2 col-form-label">
+            LastName
+        </label>
+        <div class="col-sm-1-l0">
+            <InputText id="lastName" class="form-control" @bind-Value="person.Lastname" />
+            <ValidationMessage For="@(()=> person.Lastname )" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="Age" class="col-sm-2 col-form-label">
+            Age
+        </label>
+        <div class="col-sm-1-10">
+            <InputNumber id="age" class="form-control" @bind-Value="person.Age" />
+            <ValidationMessage For="@(()=> person.Age )" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code{
+    private Person person = new Person();
+}
