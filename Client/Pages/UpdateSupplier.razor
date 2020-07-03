@@ -11,19 +11,19 @@
 }
 else
 {
-<EditForm Model="supplier">
+<EditForm Model="@supplier"  OnValidSubmit="@doIt" >
     <table width="80%" style="font-size:10px">
         <tr>
             <td>
                 <div>
                     <label>Company name</label>
-                    <input type="text" value="@supplier.CompanyName" class="form-control col-md-8" />
+                    <InputText id="companyName" @bind-Value="@supplier.CompanyName" class="form-control col-md-8"></InputText>
                 </div>
             </td>
             <td>
                 <div>
                     <label>Contact name</label>
-                    <input type="text" value="@supplier.ContactName" class="form-control col-md-8" />
+                    <InputText id="contactName" @bind-Value="@supplier.ContactName" class="form-control col-md-8"></InputText>
                 </div>
             </td>
         </tr>
@@ -32,12 +32,13 @@ else
                 <div>
                     <label>Contact title</label>
                     <input type="text" value="@supplier.ContactTitle" class="form-control col-md-8" />
+                    <InputText id="contactTitle" @bind-Value="@supplier.ContactTitle" class="form-control col-md-8"></InputText>
                 </div>
             </td>
             <td>
                 <div>
                     <label>Address</label>
-                    <input type="text" value="@supplier.Address" class="form-control col-md-8" />
+                    <InputText id="address" @bind-Value="@supplier.Address" class="form-control col-md-8"></InputText>
                 </div>
             </td>
         </tr>
@@ -45,13 +46,13 @@ else
             <td>
                 <div>
                     <label>City</label>
-                    <input type="text" value="@supplier.City" class="form-control col-md-8" />
+                    <InputText id="city" @bind-Value="@supplier.City" class="form-control col-md-8"></InputText>
                 </div>
             </td>
             <td>
                 <div>
                     <label>Region</label>
-                    <input type="text" value="@supplier.Region" class="form-control col-md-8" />
+                    <InputText id="region" @bind-Value="@supplier.Region" class="form-control col-md-8"></InputText>
                 </div>
             </td>
         </tr>
@@ -59,13 +60,13 @@ else
             <td>
                 <div>
                     <label>Postal Code</label>
-                    <input type="text" value="@supplier.PostalCode" class="form-control col-md-8" />
+                    <InputText id="postalCode" @bind-Value="@supplier.PostalCode" class="form-control col-md-8"></InputText>
                 </div>
             </td>
             <td>
                 <div>
                     <label>Country</label>
-                    <input type="text" value="@supplier.Country" class="form-control col-md-8" />
+                    <InputText id="contry" @bind-Value="@supplier.Country" class="form-control col-md-8"></InputText>
                 </div>
             </td>
         </tr>
@@ -73,13 +74,13 @@ else
             <td>
                 <div>
                     <label>Phone</label>
-                    <input type="text" value="@supplier.Phone" class="form-control col-md-8" />
+                    <InputText id="phone" @bind-Value="@supplier.Phone" class="form-control col-md-8"></InputText>
                 </div>
             </td>
             <td>
                 <div>
                     <label>Fax</label>
-                    <input type="text" value="@supplier.Fax" class="form-control col-md-8" />
+                    <InputText id="fax" @bind-Value="@supplier.Fax" class="form-control col-md-8"></InputText>
                 </div>
             </td>
         </tr>
@@ -87,30 +88,33 @@ else
             <td colspan="2">
                 <div>
                     <label>Home page</label>
-                    <input type="text" value="@supplier.HomePage" class="form-control col-md-8" />
+                    <InputText id="homePage" @bind-Value="@supplier.HomePage" class="form-control col-md-8"></InputText>
                 </div>
             </td>
 
         </tr>
     </table>
     <br />
-    <input type="submit" value="Update" class="btn-success" />
+    <button class="btn-success" >Submit</button>
+    
+   
 </EditForm>
   
-    
+    <span>Writint: @Message</span>
 
 }
 @code {
-        [Parameter]
-        public string ID { get; set; }
+    [Parameter]
+    public string ID { get; set; }
 
-    public Supplier supplier { get; set }
+    public Supplier supplier { get; set; }
     public string Message { get; set; }
-    
+
     private async Task OnUpdateAsync()
     {
-       
-        Message = await Http.PutAsJsonAsync<string>("/api/Suppliers/" + supplier.SupplierID, supplier);
+
+        var t  = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
+        Message = t.StatusCode.ToString();
     }
 
     protected override async Task OnInitializedAsync()
@@ -119,4 +123,19 @@ else
         supplier = await Http.GetFromJsonAsync<Supplier>("api/Suppliers/" + ID);
 
     }
+
+    private void failedSubmit()
+    {
+        Message = "Failed....";
+    }
+
+
+    private async Task doIt()
+    {
+        Message = "Busy....";
+        var t =  await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
+        Message =  t.StatusCode.ToString();
+    }
+
+  
 }

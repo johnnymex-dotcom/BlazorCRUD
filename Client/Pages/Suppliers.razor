@@ -43,11 +43,11 @@ else
             </tr>
             }
         </tbody>
-</table>
+    </table>
 
        
 }
-        @code {
+ @code {
     private IEnumerable<Supplier> suppliers;
         private string mess = "";
 
@@ -56,6 +56,5 @@ else
             suppliers = await Http.GetFromJsonAsync<IEnumerable<Supplier>>("api/Suppliers");
 
         }
-
-        }
+}
 
