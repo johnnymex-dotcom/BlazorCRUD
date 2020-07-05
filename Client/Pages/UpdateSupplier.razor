@@ -31,7 +31,6 @@ else
             <td>
                 <div>
                     <label>Contact title</label>
-                    <input type="text" value="@supplier.ContactTitle" class="form-control col-md-8" />
                     <InputText id="contactTitle" @bind-Value="@supplier.ContactTitle" class="form-control col-md-8"></InputText>
                 </div>
             </td>
@@ -100,7 +99,7 @@ else
    
 </EditForm>
   
-    <span>Writint: @Message</span>
+    <span style="@styleForMess">@Message</span>
 
 }
 @code {
@@ -109,6 +108,7 @@ else
 
     public Supplier supplier { get; set; }
     public string Message { get; set; }
+    private string styleForMess { get; set; }
 
     private async Task OnUpdateAsync()
     {
@@ -132,10 +132,35 @@ else
 
     private async Task doIt()
     {
-        Message = "Busy....";
+        Message = "Updating supplier , please wait.....";
+        styleForMess = "color:limegreen";
         var t =  await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
-        Message =  t.StatusCode.ToString();
+        if (t.IsSuccessStatusCode)
+        {
+            MytTimerAsync(100, "The supplier updated OK.....");
+
+        }
+
     }
 
-  
+
+    public async void MytTimerAsync( int _time,string myMess)
+    {
+        int time = _time;
+        while (time > 0)
+        {
+            time--;
+            if (time % 10 == 0)
+            {
+                styleForMess = "color:darkgreen";
+                Message = myMess;
+            }
+            StateHasChanged();
+            await Task.Delay(1);
+        }
+        Message = "";
+
+    }
+
+
 }
