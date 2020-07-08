@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using BlazorCRUD.Shared.Services;
 
 namespace BlazorCRUD.Client
 {
@@ -19,6 +20,8 @@ namespace BlazorCRUD.Client
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            builder.Services.AddSingleton<BlazorTimer>();
+            builder.Services.AddTransient<System.Timers.Timer>();
             await builder.Build().RunAsync();
         }
     }

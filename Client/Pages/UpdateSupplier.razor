@@ -1,106 +1,109 @@
 ﻿@page "/UpdateSupplier/{ID}"
 @using BlazorCRUD.Shared
 @inject HttpClient Http
+@inject BlazorCRUD.Shared.Services.BlazorTimer BlazorTmr;
 
 <h3>UpdateSupplier</h3>
 <div>You want to update item with SupplierID: @ID</div>
 <hr />
 @if (supplier == null)
 {
-<p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>
 }
 else
 {
-<EditForm Model="@supplier"  OnValidSubmit="@doIt" >
-    <table width="80%" style="font-size:10px">
-        <tr>
-            <td>
-                <div>
-                    <label>Company name</label>
-                    <InputText id="companyName" @bind-Value="@supplier.CompanyName" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <label>Contact name</label>
-                    <InputText id="contactName" @bind-Value="@supplier.ContactName" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div>
-                    <label>Contact title</label>
-                    <InputText id="contactTitle" @bind-Value="@supplier.ContactTitle" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <label>Address</label>
-                    <InputText id="address" @bind-Value="@supplier.Address" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div>
-                    <label>City</label>
-                    <InputText id="city" @bind-Value="@supplier.City" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <label>Region</label>
-                    <InputText id="region" @bind-Value="@supplier.Region" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div>
-                    <label>Postal Code</label>
-                    <InputText id="postalCode" @bind-Value="@supplier.PostalCode" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <label>Country</label>
-                    <InputText id="contry" @bind-Value="@supplier.Country" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <div>
-                    <label>Phone</label>
-                    <InputText id="phone" @bind-Value="@supplier.Phone" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <label>Fax</label>
-                    <InputText id="fax" @bind-Value="@supplier.Fax" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <div>
-                    <label>Home page</label>
-                    <InputText id="homePage" @bind-Value="@supplier.HomePage" class="form-control col-md-8"></InputText>
-                </div>
-            </td>
+    <EditForm Model="@supplier" OnValidSubmit="@doIt">
+        <table width="80%" style="font-size:10px">
+            <tr>
+                <td>
+                    <div>
+                        <label>Company name</label>
+                        <InputText id="companyName" @bind-Value="@supplier.CompanyName" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label>Contact name</label>
+                        <InputText id="contactName" @bind-Value="@supplier.ContactName" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label>Contact title</label>
+                        <InputText id="contactTitle" @bind-Value="@supplier.ContactTitle" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label>Address</label>
+                        <InputText id="address" @bind-Value="@supplier.Address" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label>City</label>
+                        <InputText id="city" @bind-Value="@supplier.City" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label>Region</label>
+                        <InputText id="region" @bind-Value="@supplier.Region" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label>Postal Code</label>
+                        <InputText id="postalCode" @bind-Value="@supplier.PostalCode" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label>Country</label>
+                        <InputText id="contry" @bind-Value="@supplier.Country" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label>Phone</label>
+                        <InputText id="phone" @bind-Value="@supplier.Phone" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <label>Fax</label>
+                        <InputText id="fax" @bind-Value="@supplier.Fax" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <div>
+                        <label>Home page</label>
+                        <InputText id="homePage" @bind-Value="@supplier.HomePage" class="form-control col-md-8"></InputText>
+                    </div>
+                </td>
 
-        </tr>
-    </table>
+            </tr>
+        </table>
+        <br />
+        <button class="btn-success" @onclick="doIt">Submit</button>
+
+
+    </EditForm>
     <br />
-    <button class="btn-success" >Submit</button>
     
-   
-</EditForm>
-  
-    <span style="@styleForMess">@Message</span>
-
+    <div class="notificationFrame" style="@myStyle">
+        @Content
+    </div>
 }
 @code {
     [Parameter]
@@ -108,13 +111,16 @@ else
 
     public Supplier supplier { get; set; }
     public string Message { get; set; }
-    private string styleForMess { get; set; }
+    //private string styleForMess { get; set; }
+
+    private string myStyle = "visibility:hidden";
+    private string Content;
 
     private async Task OnUpdateAsync()
     {
 
-        var t  = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
-        Message = t.StatusCode.ToString();
+        var t = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
+        //Message = t.StatusCode.ToString();
     }
 
     protected override async Task OnInitializedAsync()
@@ -126,41 +132,38 @@ else
 
     private void failedSubmit()
     {
-        Message = "Failed....";
+        // Message = "Failed....";
     }
 
 
     private async Task doIt()
     {
-        Message = "Updating supplier , please wait.....";
-        styleForMess = "color:limegreen";
-        var t =  await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
+        var t = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
         if (t.IsSuccessStatusCode)
         {
-            MytTimerAsync(100, "The supplier updated OK.....");
+            showMessage ("The supplier updated OK.....");
 
         }
 
     }
 
-
-    public async void MytTimerAsync( int _time,string myMess)
+    private void showMessage(string message)
     {
-        int time = _time;
-        while (time > 0)
-        {
-            time--;
-            if (time % 10 == 0)
-            {
-                styleForMess = "color:darkgreen";
-                Message = myMess;
-            }
-            StateHasChanged();
-            await Task.Delay(1);
-        }
-        Message = "";
-
+        myStyle = "visibility:visible";
+        Content = message;
+        BlazorTmr.SetTimer(1500);
+        BlazorTmr.OnElapsed += MessageDone;
     }
+
+    private void MessageDone()
+    {
+        myStyle = "visibility:hidden";
+        Content = "";
+        StateHasChanged();
+    }
+
+
+
 
 
 }

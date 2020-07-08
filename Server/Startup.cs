@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using BlazorCRUD.Server.Data;
+using BlazorCRUD.Shared.Services;
+
 
 namespace BlazorCRUD.Server
 {
@@ -30,7 +32,6 @@ namespace BlazorCRUD.Server
             }
             catch (System.Exception)
             {
-                                
             }
             services.AddControllersWithViews();
             services.AddRazorPages();
