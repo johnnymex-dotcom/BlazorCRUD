@@ -30,6 +30,7 @@ namespace BlazorCRUD.Server.Controllers
         public IEnumerable<Supplier> Get()
         {
             var suppliers = SuppCtx.Suppliers.ToList();
+            
             return suppliers;
         }
 

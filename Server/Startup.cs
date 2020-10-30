@@ -28,7 +28,10 @@ namespace BlazorCRUD.Server
         {
             try
             {
-               services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Northwind")));
+               var str=  Configuration.GetConnectionString("mexoftdb");
+
+                //services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(/*"server:JO-LENOVO\\SQL2014; database:NORTHWND;Integrated Security=True;Connect Timeout=30;"*/));
+               services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(str/*Configuration.GetConnectionString("NWind")*/));
             }
             catch (System.Exception)
             {

@@ -43,18 +43,18 @@ else
             }
         </tbody>
     </table>
-
+    <div>@mess</div>
        
 }
  @code {
-    private IEnumerable<Supplier> suppliers;
-        private string mess = "";
+     private List<Supplier> suppliers;
+     private string mess = "";
 
-        protected override async Task OnInitializedAsync()
-        {
-            
-            suppliers = await Http.GetFromJsonAsync<IEnumerable<Supplier>>("api/Suppliers");
+     protected override async Task OnInitializedAsync()
+     {
+         suppliers = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
+     }
 
-        }
+
 }
 

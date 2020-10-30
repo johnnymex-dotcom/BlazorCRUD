@@ -4,6 +4,7 @@
 @inject BlazorCRUD.Shared.Services.BlazorTimer BlazorTmr;
 @using System.Threading.Tasks;
 
+@inject HttpClient Http
 
 <h1>Hello, world!</h1>
 
@@ -41,7 +42,7 @@ Welcome to your new app.
             <ValidationMessage For="@(()=> person.Age )" />
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary" @onclick="doSubmit">Submit</button>
 </EditForm>
 <br />
 <br />
@@ -101,5 +102,20 @@ Welcome to your new app.
         myStyle = "visibility:hidden";
     }
 
+    private async Task doSubmit()
+    {
+        try
+        {
+            var t = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
+            if (t.Count > 0)
+                txt = "There are more than 0 items...";
+            else
+                txt = "bad luck....";
+        }
+        catch(Exception ex)
+        {
+               txt =  ex.Message;
+        }
+    }
 
 }
