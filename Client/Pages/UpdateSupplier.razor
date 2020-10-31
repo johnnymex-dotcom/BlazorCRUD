@@ -1,9 +1,10 @@
 ﻿@page "/UpdateSupplier/{ID}"
 @using BlazorCRUD.Shared
 @inject HttpClient Http
-@inject BlazorCRUD.Shared.Services.BlazorTimer BlazorTmr;
+@inject BlazorCRUD.Client.BlazorTimer BlazorTmr
 
 <h3>UpdateSupplier</h3>
+<a href="/Suppliers">Back to list</a>
 <div>You want to update item with SupplierID: @ID</div>
 <hr />
 @if (supplier == null)
@@ -13,12 +14,15 @@
 else
 {
     <EditForm Model="@supplier" OnValidSubmit="@doIt">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
         <table width="80%" style="font-size:10px">
             <tr>
                 <td>
                     <div>
                         <label>Company name</label>
                         <InputText id="companyName" @bind-Value="@supplier.CompanyName" class="form-control col-md-8"></InputText>
+                        <ValidationMessage For="@(()=> supplier.CompanyName)" />
                     </div>
                 </td>
                 <td>
@@ -100,7 +104,7 @@ else
 
     </EditForm>
     <br />
-    
+
     <div class="notificationFrame" style="@myStyle">
         @Content
     </div>
@@ -116,23 +120,10 @@ else
     private string myStyle = "visibility:hidden";
     private string Content;
 
-    private async Task OnUpdateAsync()
-    {
-
-        var t = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
-        //Message = t.StatusCode.ToString();
-    }
 
     protected override async Task OnInitializedAsync()
     {
-
         supplier = await Http.GetFromJsonAsync<Supplier>("api/Suppliers/" + ID);
-
-    }
-
-    private void failedSubmit()
-    {
-        // Message = "Failed....";
     }
 
 
@@ -141,10 +132,8 @@ else
         var t = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
         if (t.IsSuccessStatusCode)
         {
-            showMessage ("The supplier updated OK.....");
-
+            showMessage("Supplier was updated OK.....");
         }
-
     }
 
     private void showMessage(string message)
@@ -161,9 +150,4 @@ else
         Content = "";
         StateHasChanged();
     }
-
-
-
-
-
 }

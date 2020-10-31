@@ -4,13 +4,17 @@
 
 
 <h3>Suppliers</h3>
-
-@if (suppliers == null) 
+<div>@mess</div>
+@if (suppliers == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
+<div style="text-align:center">
+    
+    <a href="CreateSupplier">Create new supplier.</a>
+</div>
     <table style="font-size:10px" class="table">
         <thead>
             <tr>
@@ -29,31 +33,42 @@ else
         <tbody>
             @foreach (var supp in suppliers)
             {
-            <tr>
-                <td className="invisibleColumn">@supp.SupplierID</td>
-                <td>@supp.CompanyName</td>
-                <td>@supp.ContactName</td>
-                <td>@supp.ContactTitle</td>
-                <td style="width:80px">@supp.Address</td>
-                <td>@supp.City</td>
-                <td>@supp.Country</td>
-                <td>@supp.Phone</td>
-                <td><a href="UpdateSupplier/@supp.SupplierID">Edit</a></td>
-            </tr>
+                <tr>
+                    <td className="invisibleColumn">@supp.SupplierID</td>
+                    <td>@supp.CompanyName</td>
+                    <td>@supp.ContactName</td>
+                    <td>@supp.ContactTitle</td>
+                    <td style="width:80px">@supp.Address</td>
+                    <td>@supp.City</td>
+                    <td>@supp.Country</td>
+                    <td>@supp.Phone</td>
+                    <td>
+                        <a href="UpdateSupplier/@supp.SupplierID">Edit</a>
+                        <a href="DeleteSupplier/@supp.SupplierID">Delete</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
-    <div>@mess</div>
-       
-}
- @code {
-     private List<Supplier> suppliers;
-     private string mess = "";
+    
 
-     protected override async Task OnInitializedAsync()
-     {
-         suppliers = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
-     }
+}
+@code {
+    private List<Supplier> suppliers;
+    private string mess = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        mess = "Getting suppliers.....";
+        try
+        {
+            suppliers = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
+        }
+        catch (Exception ex)
+        {
+            mess = ex.Message;
+        }
+    }
 
 
 }

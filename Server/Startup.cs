@@ -26,15 +26,17 @@ namespace BlazorCRUD.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            string str = "";
             try
             {
-               var str=  Configuration.GetConnectionString("mexoftdb");
+               str=  Configuration.GetConnectionString("Northwind");
 
                 //services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(/*"server:JO-LENOVO\\SQL2014; database:NORTHWND;Integrated Security=True;Connect Timeout=30;"*/));
-               services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(str/*Configuration.GetConnectionString("NWind")*/));
+               services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(str));
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
+                str = ex.Message;
             }
             services.AddControllersWithViews();
             services.AddRazorPages();

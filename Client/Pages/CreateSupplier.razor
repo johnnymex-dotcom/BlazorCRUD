@@ -1,0 +1,158 @@
+﻿@page "/CreateSupplier"
+@using BlazorCRUD.Shared
+@inject HttpClient Http
+@inject BlazorCRUD.Client.BlazorTimer BlazorTmr
+@inject NavigationManager UriHelper
+
+<h3>CreateSupplier</h3>
+<a href="/Suppliers">Back to list</a>
+<hr />
+<div class="divHighLight">
+    You can only add a supplier if the amount of suppliers is less than 50.
+    <br />
+    This is in order to that the Supplier table will not grow beyond bounds.
+    <br /><br />
+</div>
+<EditForm Model="@supplier" OnValidSubmit="@doIt">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <table width="80%" style="font-size:10px">
+        <tr>
+            <td>
+                <div>
+                    <label>Company name</label>
+                    <InputText id="companyName" @bind-Value="@supplier.CompanyName" class="form-control col-md-8"></InputText>
+                    <ValidationMessage For="@(()=> supplier.CompanyName)" />
+
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label>Contact name</label>
+                    <InputText id="contactName" @bind-Value="@supplier.ContactName" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label>Contact title</label>
+                    <InputText id="contactTitle" @bind-Value="@supplier.ContactTitle" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label>Address</label>
+                    <InputText id="address" @bind-Value="@supplier.Address" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label>City</label>
+                    <InputText id="city" @bind-Value="@supplier.City" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label>Region</label>
+                    <InputText id="region" @bind-Value="@supplier.Region" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label>Postal Code</label>
+                    <InputText id="postalCode" @bind-Value="@supplier.PostalCode" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label>Country</label>
+                    <InputText id="contry" @bind-Value="@supplier.Country" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <label>Phone</label>
+                    <InputText id="phone" @bind-Value="@supplier.Phone" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <label>Fax</label>
+                    <InputText id="fax" @bind-Value="@supplier.Fax" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div>
+                    <label>Home page</label>
+                    <InputText id="homePage" @bind-Value="@supplier.HomePage" class="form-control col-md-8"></InputText>
+                </div>
+            </td>
+
+        </tr>
+    </table>
+    <br />
+    <button class="btn-success">Submit</button>
+
+
+</EditForm>
+
+<span style="color:purple">@supplier.CompanyName</span>
+<div class="notificationFrame" style="@myStyle">
+    @Content
+</div>
+@code {
+
+    public Supplier supplier { get; set; }
+    public string Message { get; set; }
+    private string myStyle = "visibility:hidden";
+    private string Content;
+
+
+    protected override void OnInitialized()
+    {
+        supplier = new Supplier();
+    }
+
+    private async Task doIt()
+    {
+        var t = await Http.PostAsJsonAsync<Supplier>("/api/Suppliers/", supplier);
+        if (t.IsSuccessStatusCode)
+        {
+            showMessage("Supplier was updated OK.....");
+        }
+    }
+
+    private void showMessage(string message)
+    {
+        myStyle = "visibility:visible";
+        Content = message;
+        BlazorTmr.SetTimer(2500);
+        BlazorTmr.OnElapsed += MessageDone;
+    }
+
+    private void MessageDone()
+    {
+        myStyle = "visibility:hidden";
+        Content = "";
+        StateHasChanged();
+        BlazorTmr.SetTimer(2500);
+        BlazorTmr.OnElapsed -= MessageDone;
+        BlazorTmr.OnElapsed += goHome;
+    }
+
+    private void goHome()
+    {
+        BlazorTmr.OnElapsed -= goHome;
+        UriHelper.NavigateTo("Suppliers");
+    }
+
+}

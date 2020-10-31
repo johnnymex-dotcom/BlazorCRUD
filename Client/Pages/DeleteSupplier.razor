@@ -1,0 +1,87 @@
+﻿@page "/DeleteSupplier/{ID}"
+@using BlazorCRUD.Shared
+@inject HttpClient Http
+@inject BlazorCRUD.Client.BlazorTimer BlazorTmr
+@inject NavigationManager UriHelper
+
+<h3>DeleteSupplier</h3>
+<a href="/Suppliers">Back to list</a>
+<div>You want to delete item with SupplierID: @ID</div>
+<hr />
+<br />
+<p>Are you sure you want to delete this supplier ?</p>
+<div class="divHighLight">
+    You can only delete a supplier with an ID greater than 29, which is the range of the original Nortwind suppliers that we don't touch.
+    <br />
+    It will indicate this if you choose lower than 30, simply by using the word <b>FAKE</b>
+    <br /><br />
+</div>
+<div style="width:20%">
+    <input type="button" value="Yes" class="btn btn-danger" @onclick="goAndDelete" />
+    <input type="button" value="No" class="btn btn-info" style="float:right" @onclick="goBack" />
+</div>
+<p>@myMessage</p>
+<div class="notificationFrame" style="@myStyle">
+    @Content
+</div>
+@code {
+    [Parameter]
+    public string ID { get; set; }
+
+    private string myStyle = "visibility:hidden";
+    private string Content;
+
+    private string myMessage;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+    }
+
+
+    private void goBack()
+    {
+        UriHelper.NavigateTo("Suppliers");
+    }
+
+    public async Task goAndDelete()
+    {
+        var response = await Http.DeleteAsync("api/Suppliers/" + ID);
+        var res = response.IsSuccessStatusCode;
+        if (res)
+        {
+            myMessage = "Visible";
+            if (Convert.ToInt32(ID) > 30)
+                showMessage("Supplier was deleted OK.....");
+            else
+                showMessage("Supplier was [FAKE] deleted OK.....");
+        }
+
+    }
+
+    private void showMessage(string message)
+    {
+        myStyle = "visibility:visible";
+        Content = message;
+        BlazorTmr.SetTimer(2500);
+        BlazorTmr.OnElapsed += MessageDone;
+    }
+
+    private void MessageDone()
+    {
+        myStyle = "visibility:hidden";
+        Content = "";
+        StateHasChanged();
+        BlazorTmr.SetTimer(2500);
+        BlazorTmr.OnElapsed -= MessageDone;
+        BlazorTmr.OnElapsed += goHome;
+    }
+
+    private void goHome()
+    {
+        BlazorTmr.OnElapsed -= goHome;
+        UriHelper.NavigateTo("Suppliers");
+    }
+
+}
