@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/Index"
 @using  BlazorCRUD.Shared
 @inject System.Timers.Timer Tmr;
 @*@inject BlazorCRUD.Shared.Services.BlazorTimer BlazorTmr;*@
@@ -6,12 +6,6 @@
 @using System.Threading.Tasks;
 
 @inject HttpClient Http
-
-<h1>Hello, world!</h1>
-
-    Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
 
 <EditForm Model="@person">
     <DataAnnotationsValidator />
