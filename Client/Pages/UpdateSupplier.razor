@@ -132,8 +132,10 @@ else
         var t = await Http.PutAsJsonAsync<Supplier>("/api/Suppliers/" + supplier.SupplierID, supplier);
         if (t.IsSuccessStatusCode)
         {
-            showMessage("Supplier was updated OK.....");
+            showMessage("Supplier was updated OK....."+ t.StatusCode);
         }
+        else
+            showMessage("Supplier was NOT updated.. "+ t.StatusCode); 
     }
 
     private void showMessage(string message)
