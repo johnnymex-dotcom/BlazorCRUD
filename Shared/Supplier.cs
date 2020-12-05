@@ -1,11 +1,14 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace BlazorCRUD.Shared
 {
-    public class Supplier
+    public partial class Supplier
     {
         [Key]
+        [Column("SupplierID")]
         public int SupplierID { get; set; }
         [Required]
         public string CompanyName { get; set; }

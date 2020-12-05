@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using BlazorCRUD.Shared
+
 @inject HttpClient Http
 
 
@@ -11,10 +12,10 @@
 }
 else
 {
-<div style="text-align:center">
-    
-    <a href="CreateSupplier">Create new supplier.</a>
-</div>
+    <div style="text-align:center">
+
+        <a href="CreateSupplier">Create new supplier.</a>
+    </div>
     <table style="font-size:10px" class="table">
         <thead>
             <tr>
@@ -32,37 +33,39 @@ else
         </thead>
         <tbody>
             @*@foreach (var supp in supplierList)*@
-                @foreach (var supp in suppliers)
-                {
-                    <tr>
-                        <td className="invisibleColumn">@supp.SupplierID</td>
-                        <td>@supp.CompanyName</td>
-                        <td>@supp.ContactName</td>
-                        <td>@supp.ContactTitle</td>
-                        <td style="width:80px">@supp.Address</td>
-                        <td>@supp.City</td>
-                        <td>@supp.Country</td>
-                        <td>@supp.Phone</td>
-                        <td>
-                            <a href="UpdateSupplier/@supp.SupplierID">Edit</a>
-                            <a href="DeleteSupplier/@supp.SupplierID">Delete</a>
-                        </td>
-                    </tr>
-                }
+            @foreach (var supp in suppliers)
+            {
+                <tr>
+                    <td className="invisibleColumn">@supp.SupplierID</td>
+                    <td>@supp.CompanyName</td>
+                    <td>@supp.ContactName</td>
+                    <td>@supp.ContactTitle</td>
+                    <td style="width:80px">@supp.Address</td>
+                    <td>@supp.City</td>
+                    <td>@supp.Country</td>
+                    <td>@supp.Phone</td>
+                    <td>
+                        <a href="UpdateSupplier/@supp.SupplierID">Edit</a>
+                        <a href="DeleteSupplier/@supp.SupplierID">Delete</a>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
-    
+
+  
+
 
 }
 @code {
-    private List<Supplier> suppliers;
-    //private List<Supplier> supplierList;
+    public List<Supplier> suppliers;
+    
 
     private string mess = "";
 
     protected override async Task OnInitializedAsync()
     {
-        mess = "Getting suppliers.....";
+
         try
         {
             suppliers = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");

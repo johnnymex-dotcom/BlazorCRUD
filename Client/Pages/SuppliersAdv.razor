@@ -1,0 +1,54 @@
+﻿@page "/SuppliersAdv"
+@using BlazorCRUD.Shared
+
+@using supplierx = BlazorCRUD.Shared.Supplier
+
+@inject HttpClient Http
+
+
+<h3>Suppliers (Advanced)</h3>
+<div>@mess</div>
+
+ 
+    <TelerikGrid Data=@suppliers  
+                 Pageable=true PageSize=@PageSize 
+                 @bind-Page="@CurrentPage">
+        <GridColumns>
+            <GridColumn Field=@nameof(supplierx.SupplierID) Title="SupplierID" />
+            <GridColumn Field=@nameof(supplierx.CompanyName) Title="Company Name" />
+            <GridColumn Field=@nameof(supplierx.ContactName) Title="Contact Name" />
+            <GridColumn Field=@nameof(supplierx.ContactTitle) Title="Title" />
+            <GridColumn Field=@nameof(supplierx.Address) Title="Address" />
+            <GridColumn Field=@nameof(supplierx.City) Title="City" />
+            <GridColumn Field=@nameof(supplierx.Country) Title="Country" />
+            <GridColumn Field=@nameof(supplierx.Phone) Title="Phone" />
+        </GridColumns>
+    </TelerikGrid>
+ 
+
+@code {
+    public IEnumerable<Supplier> suppliers;
+    
+    int PageSize = 6;
+    int CurrentPage = 1;
+    string Height = "400px";
+
+    private string mess = "???";
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+        try
+        {
+            suppliers = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
+            
+        }
+        catch (Exception ex)
+        {
+            mess = ex.Message;
+        }
+    }
+
+
+}
+
