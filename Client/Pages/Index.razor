@@ -1,116 +1,122 @@
 ﻿@page "/Index"
 @using  BlazorCRUD.Shared
 @inject System.Timers.Timer Tmr;
-@*@inject BlazorCRUD.Shared.Services.BlazorTimer BlazorTmr;*@
+
 @inject BlazorCRUD.Client.BlazorTimer BlazorTmr;
 @using System.Threading.Tasks;
 
 @inject HttpClient Http
 
-<EditForm Model="@person">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="form-group row">
-        <label for="Firstname" class="col-sm-2 col-form-label">
-            FirstName
-        </label>
-        <div class="col-sm-1-10">
-            <InputText id="firstName" class="form-control" @bind-Value="person.Firstname" />
-            <ValidationMessage For="@(()=> person.Firstname )" />
+    <h3>Validation user error.</h3>
+    <EditForm Model="@person"  OnValidSubmit="doSubmit" OnInvalidSubmit="ErrMessageShow">
+        <DataAnnotationsValidator />
+        @*<ValidationSummary />*@
+        <div class="form-group row">
+            <label for="Firstname" class="col-sm-2 col-form-label">
+                FirstName
+            </label>
+            <div class="col-sm-1-10">
+                <InputText id="firstName" class="form-control" @bind-Value="person.Firstname" />
+                <ValidationMessage For="@(()=> person.Firstname )" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Lastname" class="col-sm-2 col-form-label">
-            LastName
-        </label>
-        <div class="col-sm-1-l0">
-            <InputText id="lastName" class="form-control" @bind-Value="person.Lastname" />
-            <ValidationMessage For="@(()=> person.Lastname )" />
+        <div class="form-group row">
+            <label for="Lastname" class="col-sm-2 col-form-label">
+                LastName
+            </label>
+            <div class="col-sm-1-l0">
+                <InputText id="lastName" class="form-control" @bind-Value="person.Lastname" />
+                <ValidationMessage For="@(()=> person.Lastname )" />
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="Age" class="col-sm-2 col-form-label">
-            Age
-        </label>
-        <div class="col-sm-1-10">
-            <InputNumber id="age" class="form-control" @bind-Value="person.Age" />
-            <ValidationMessage For="@(()=> person.Age )" />
+        <div class="form-group row">
+            <label for="Age" class="col-sm-2 col-form-label">
+                Age
+            </label>
+            <div class="col-sm-1-10">
+                <InputNumber id="age" class="form-control" @bind-Value="person.Age" />
+                <ValidationMessage For="@(()=> person.Age )" />
+            </div>
         </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </EditForm>
+    <br />
+    <div class="notificationFrame" style="@myStyle">
+        @Content
     </div>
-    <button type="submit" class="btn btn-primary" @onclick="doSubmit">Submit</button>
-</EditForm>
-<br />
-<br />
-<div class="notificationFrame" style="@myStyle">
-    @Content
-</div>
-<span>@txt</span>
-<br />
-<br />
-<br />
-<button class="btn btn-primary" @onclick="jerkIT">Go</button>
+    <span>@txt</span>
+    <hr />
+    <select class="form-control col-sm-2" >
+        @((MarkupString)myDropDownOptions)
+    </select>
+    <hr />
+    <br />
+    <div style="@ErrStyle">@ErrMessage</div>
+    
 
 
 
-@code{
-    private Person person = new Person();
-    private string myStyle = "visibility:hidden";
-
-    private string txt;
-    private string Content;
-    //private System.Timers.Timer Tmr = new System.Timers.Timer();
+    @code{
+        private Person person = new Person();
+        private string myStyle = "visibility:hidden";
+        private string ErrStyle = "";
 
 
-    protected override void OnInitialized()
-    {
-        BlazorTmr.SetTimer(1000);
-    }
+        private string txt;
+        private string Content;
+        private string ErrMessage;
+        private string myDropDownOptions;
 
 
-    private void jerkIT()
-    {
-        RockIt();
-        Tmr.Interval = 2500;
-        Tmr.Enabled = true;
-        Tmr.Elapsed += OnTimedEvent;
-        Tmr.Start();
-    }
-
-    private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
-    {
-        Tmr.Stop();
-        StopIt();
-        StateHasChanged();
-    }
-
-
-    private void RockIt()
-    {
-        Content = "Updated OK.....";
-        myStyle = "visibility:visible";
-
-    }
-
-    private void StopIt()
-    {
-        Content = "";
-        myStyle = "visibility:hidden";
-    }
-
-    private async Task doSubmit()
-    {
-        try
+        protected override void OnInitialized()
         {
-            var t = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
-            if (t.Count > 0)
-                txt = "There are more than 0 items...";
-            else
-                txt = "bad luck....";
-        }
-        catch (Exception ex)
-        {
-            txt = ex.Message;
-        }
-    }
+            BlazorTmr.SetTimer(1000);
 
-}
+            myDropDownOptions = "<option value=\"1\">Take a break</option>" +
+                                 "<option value=\"2\">Take one more</option>";
+        }
+
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            Tmr.Stop();
+            StopIt();
+            StateHasChanged();
+        }
+
+        private void StartIt()
+        {
+            Content = "Updated OK.....";
+            myStyle = "display:block";
+            Tmr.Interval = 1000;
+            Tmr.Enabled = true;
+            Tmr.Elapsed += OnTimedEvent;
+            Tmr.Start();
+        }
+
+        private void StopIt()
+        {
+            Content = "";
+            myStyle = "display:none";
+        }
+
+        private async Task doSubmit()
+        {
+            ErrMessage = "";
+            try
+            {
+                var t = await Http.GetFromJsonAsync<List<Supplier>>("api/Suppliers");
+                StartIt();
+            }
+            catch (Exception ex)
+            {
+                txt = ex.Message;
+            }
+        }
+
+        private void ErrMessageShow()
+        {
+            ErrStyle = "color:red";
+            ErrMessage = "Submit failed...";
+        }
+
+    }

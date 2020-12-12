@@ -7,12 +7,15 @@
 
 
 <h3>Suppliers (Advanced)</h3>
+<div class="form-group">
+    <label>TelerikTextBox</label>
+    @*<TelerikTextBox Class="form-control"  />*@
+</div>
+
 <div>@mess</div>
 
  
-    <TelerikGrid Data=@suppliers  
-                 Pageable=true PageSize=@PageSize 
-                 @bind-Page="@CurrentPage">
+    <TelerikGrid Data=@suppliers  Pageable=true PageSize=@PageSize @bind-Page="@CurrentPage">
         <GridColumns>
             <GridColumn Field=@nameof(supplierx.SupplierID) Title="SupplierID" />
             <GridColumn Field=@nameof(supplierx.CompanyName) Title="Company Name" />
@@ -33,7 +36,7 @@
     int CurrentPage = 1;
     string Height = "400px";
 
-    private string mess = "???";
+    private string mess = "";
 
     protected override async Task OnInitializedAsync()
     {

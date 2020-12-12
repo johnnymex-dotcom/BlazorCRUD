@@ -1,14 +1,8 @@
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using BlazorCRUD.Shared.Services;
-
 
 
 namespace BlazorCRUD.Client
@@ -22,8 +16,22 @@ namespace BlazorCRUD.Client
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
+            //***************
+            //builder.Services.AddSingleton<UnhandledExceptionLogger>();
+
+            //***************
+
             builder.Services.AddSingleton<BlazorTimer>();
             builder.Services.AddTransient<System.Timers.Timer>();
+
+
+            //*********
+            //// Change end of Main() from await builder.Build().RunAsync(); to:
+            //var host = builder.Build();
+            //// Make sure UnhandledExceptionLogger is created at startup:
+            //host.Services.GetService<UnhandledExceptionLogger>();
+
+            //**********
 
             await builder.Build().RunAsync();
             
