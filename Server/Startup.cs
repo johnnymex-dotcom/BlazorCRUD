@@ -29,7 +29,7 @@ namespace BlazorCRUD.Server
             string str = "";
             try
             {
-               str=  Configuration.GetConnectionString("mexoft_dk_db_test");
+               str=  Configuration.GetConnectionString("Northwind");
 
                 //services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(/*"server:JO-LENOVO\\SQL2014; database:NORTHWND;Integrated Security=True;Connect Timeout=30;"*/));
                services.AddDbContext<SuppliersContext>(options => options.UseSqlServer(str));
